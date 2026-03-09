@@ -32,7 +32,7 @@ const STATUS_VARIANTS: Record<string, "default" | "success" | "destructive" | "w
   business_trip: "default",
 };
 
-interface Record {
+interface TimesheetRecord {
   id: number;
   user_id: number;
   date: string;
@@ -62,7 +62,7 @@ type CreateForm = z.infer<typeof createSchema>;
 
 export function Timesheet() {
   const { user } = useAuthStore();
-  const [records, setRecords] = useState<Record[]>([]);
+  const [records, setRecords] = useState<TimesheetRecord[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [open, setOpen] = useState(false);
   const isHR = user?.role === "hr" || user?.role === "superadmin";
