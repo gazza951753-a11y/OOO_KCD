@@ -20,22 +20,38 @@ depends_on: Union[str, Sequence[str], None] = None
 def upgrade() -> None:
     conn = op.get_bind()
 
-    # Enums — use IF NOT EXISTS (PostgreSQL 9.6+)
-    conn.execute(sa.text(
-        "CREATE TYPE IF NOT EXISTS userrole AS ENUM ('superadmin', 'hr', 'manager', 'employee')"
-    ))
-    conn.execute(sa.text(
-        "CREATE TYPE IF NOT EXISTS timesheetstatus AS ENUM "
-        "('present', 'absent', 'vacation', 'sick', 'holiday', 'business_trip')"
-    ))
-    conn.execute(sa.text(
-        "CREATE TYPE IF NOT EXISTS documenttype AS ENUM "
-        "('vacation_request', 'sick_leave', 'reference', 'other')"
-    ))
-    conn.execute(sa.text(
-        "CREATE TYPE IF NOT EXISTS documentstatus AS ENUM "
-        "('draft', 'pending', 'approved', 'rejected', 'completed')"
-    ))
+    # ENUM types — PostgreSQL CREATE TYPE has no IF NOT EXISTS, use DO blocks
+    conn.execute(sa.text("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'userrole') THEN
+                CREATE TYPE userrole AS ENUM ('superadmin', 'hr', 'manager', 'employee');
+            END IF;
+        END $$
+    """))
+    conn.execute(sa.text("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'timesheetstatus') THEN
+                CREATE TYPE timesheetstatus AS ENUM
+                    ('present', 'absent', 'vacation', 'sick', 'holiday', 'business_trip');
+            END IF;
+        END $$
+    """))
+    conn.execute(sa.text("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'documenttype') THEN
+                CREATE TYPE documenttype AS ENUM
+                    ('vacation_request', 'sick_leave', 'reference', 'other');
+            END IF;
+        END $$
+    """))
+    conn.execute(sa.text("""
+        DO $$ BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'documentstatus') THEN
+                CREATE TYPE documentstatus AS ENUM
+                    ('draft', 'pending', 'approved', 'rejected', 'completed');
+            END IF;
+        END $$
+    """))
 
     # departments
     conn.execute(sa.text("""
