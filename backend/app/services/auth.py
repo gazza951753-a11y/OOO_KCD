@@ -12,7 +12,7 @@ def authenticate_user(db: Session, email: str, password: str) -> User | None:
 
 
 def issue_tokens(user: User) -> dict:
-    payload = {"sub": user.id, "role": user.role}
+    payload = {"sub": str(user.id), "role": str(user.role.value)}
     return {
         "access_token": create_access_token(payload),
         "refresh_token": create_refresh_token(payload),
@@ -24,7 +24,8 @@ def refresh_tokens(db: Session, refresh_token: str) -> dict | None:
     payload = decode_token(refresh_token)
     if payload.get("type") != "refresh":
         return None
-    user_id = payload.get("sub")
+    raw_sub = payload.get("sub")
+    user_id = int(raw_sub) if raw_sub else None
     user = db.query(User).filter(User.id == user_id, User.is_active == True).first()
     if not user:
         return None

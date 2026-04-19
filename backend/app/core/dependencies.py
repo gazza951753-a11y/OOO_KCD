@@ -16,8 +16,9 @@ def get_current_user(
     token = credentials.credentials
     payload = decode_token(token)
 
-    user_id: int | None = payload.get("sub")
+    raw_sub = payload.get("sub")
     token_type: str | None = payload.get("type")
+    user_id: int | None = int(raw_sub) if raw_sub else None
 
     if not user_id or token_type != "access":
         raise HTTPException(
