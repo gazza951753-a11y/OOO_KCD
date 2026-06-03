@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import audit, auth, documents, reports, timekeeping, users
+from app.routers import audit, auth, documents, periods, reports, timekeeping, users
 
 app = FastAPI(
     title="ООО КЦД — Кадровая система",
@@ -26,6 +26,7 @@ app.include_router(users.router, prefix=API_PREFIX)
 app.include_router(timekeeping.router, prefix=API_PREFIX)
 app.include_router(documents.router, prefix=API_PREFIX)
 app.include_router(reports.router, prefix=API_PREFIX)
+app.include_router(periods.router, prefix=API_PREFIX)
 app.include_router(audit.router, prefix=API_PREFIX)
 
 

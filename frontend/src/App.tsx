@@ -11,6 +11,7 @@ import { Reports } from "@/pages/reports/Reports";
 import { Users } from "@/pages/users/Users";
 import { Departments } from "@/pages/users/Departments";
 import { Audit } from "@/pages/audit/Audit";
+import { Periods } from "@/pages/periods/Periods";
 
 export default function App() {
   const { fetchMe } = useAuthStore();
@@ -84,6 +85,13 @@ export default function App() {
           <Route path="/departments" element={
             <ProtectedRoute allowedRoles={["superadmin"]}>
               <Departments />
+            </ProtectedRoute>
+          } />
+
+          {/* Periods */}
+          <Route path="/periods" element={
+            <ProtectedRoute allowedRoles={["superadmin", "hr"]}>
+              <Periods />
             </ProtectedRoute>
           } />
 

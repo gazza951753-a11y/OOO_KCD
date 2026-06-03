@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   BarChart3,
   Building2,
+  CalendarClock,
   ClipboardList,
   FileText,
   Home,
@@ -34,6 +35,7 @@ const navItems: NavItem[] = [
   { label: "Документооборот", href: "/documents", icon: <FileText className="h-4 w-4" />, roles: ["hr", "manager"] },
   { label: "Мои документы", href: "/documents/me", icon: <FileText className="h-4 w-4" />, roles: ["employee"] },
   { label: "Отчёты", href: "/reports", icon: <BarChart3 className="h-4 w-4" />, roles: ["superadmin", "hr", "manager"] },
+  { label: "Периоды", href: "/periods", icon: <CalendarClock className="h-4 w-4" />, roles: ["superadmin", "hr"] },
   { label: "Сотрудники", href: "/users", icon: <Users className="h-4 w-4" />, roles: ["superadmin", "hr"] },
   { label: "Отделы", href: "/departments", icon: <Building2 className="h-4 w-4" />, roles: ["superadmin"] },
   { label: "Аудит", href: "/audit", icon: <ScrollText className="h-4 w-4" />, roles: ["superadmin"] },

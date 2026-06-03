@@ -16,6 +16,7 @@ class TimesheetRecordBase(BaseModel):
 
 class TimesheetRecordCreate(TimesheetRecordBase):
     user_id: int
+    document_id: int | None = None
 
 
 class TimesheetRecordUpdate(BaseModel):
@@ -29,6 +30,8 @@ class TimesheetRecordOut(TimesheetRecordBase):
     id: int
     user_id: int
     work_hours: float | None
+    document_id: int | None = None
+    requires_document: bool = False
     approved_by: int | None
     approved_at: datetime | None
     created_at: datetime
